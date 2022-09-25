@@ -3,12 +3,16 @@
 #include <string>
 #include <stdio.h>
 
+
+
 using namespace std;
 
 void ShowCase(char* name[], char* description[], int* priority, int* year, int* day, int* month, int* hour, int* minutes, int size, int mode);
 //ќсуществл€ем поиск дел по различным критери€м
 
 void SearchOnName(char* name[], char* description[], int* priority, int* year, int* day, int* month, int* hour, int* minutes, int size, char* buff) {
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
 	for (int i = 0; i < size; i++) {
 		if (name[i] == buff)
 		{
@@ -24,6 +28,8 @@ void SearchOnName(char* name[], char* description[], int* priority, int* year, i
 }
 
 void SearchOnPriority(char* name[], char* description[], int* priority, int* year, int* day, int* month, int* hour, int* minutes, int size, int numb) {
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
 	for (int i = 0; i < size; i++) {
 		if (priority[i] == numb) 
 		{
@@ -39,6 +45,8 @@ void SearchOnPriority(char* name[], char* description[], int* priority, int* yea
 }
 
 void SearchOnYear(char* name[], char* description[], int* priority, int* year, int* day, int* month, int* hour, int* minutes, int size, int numb) {
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
 	for (int i = 0; i < size; i++) {
 		if (year[i] == numb)
 		{
@@ -55,6 +63,8 @@ void SearchOnYear(char* name[], char* description[], int* priority, int* year, i
 }
 
 void SearchOnMonth(char* name[], char* description[], int* priority, int* year, int* day, int* month, int* hour, int* minutes, int size, int numb) {
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
 	for (int i = 0; i < size; i++) {
 		if (month[i] == numb)
 		{
@@ -70,6 +80,8 @@ void SearchOnMonth(char* name[], char* description[], int* priority, int* year, 
 	}
 }
 void SearchOnDay(char* name[], char* description[], int* priority, int* year, int* day, int* month, int* hour, int* minutes, int size, int numb) {
+	SetConsoleCP(1251);
+	SetConsoleOutputCP(1251);
 	for (int i = 0; i < size; i++) {
 		if (day[i] == numb)		
 		{
