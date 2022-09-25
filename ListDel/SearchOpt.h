@@ -3,18 +3,16 @@
 #include <string>
 #include <stdio.h>
 
-
-
 using namespace std;
 
 void ShowCase(char* name[], char* description[], int* priority, int* year, int* day, int* month, int* hour, int* minutes, int size, int mode);
 //Осуществляем поиск дел по различным критериям
 
+//НЕ РАБОТАЕТ (ВРЕМЕННО)
 void SearchOnName(char* name[], char* description[], int* priority, int* year, int* day, int* month, int* hour, int* minutes, int size, char* buff) {
-	SetConsoleCP(1251);
-	SetConsoleOutputCP(1251);
+	system("cls");
 	for (int i = 0; i < size; i++) {
-		if (name[i] == buff)
+		if (strcmp(name[i],buff) == 0)
 		{
 			cout << "Номер дела - " << i + 1 << endl << endl;
 			cout << "Приоритет - " << priority[i] << endl;
@@ -28,11 +26,11 @@ void SearchOnName(char* name[], char* description[], int* priority, int* year, i
 }
 
 void SearchOnPriority(char* name[], char* description[], int* priority, int* year, int* day, int* month, int* hour, int* minutes, int size, int numb) {
-	SetConsoleCP(1251);
-	SetConsoleOutputCP(1251);
+	system("cls");
 	for (int i = 0; i < size; i++) {
 		if (priority[i] == numb) 
 		{
+			//ShowCase(name, description, priority, year, day, month, hour, minutes, i, 2);
 			cout << "Номер дела - " << i + 1 << endl << endl;
 			cout << "Приоритет - " << priority[i] << endl;
 			cout << name[i] << "\n";
@@ -45,8 +43,7 @@ void SearchOnPriority(char* name[], char* description[], int* priority, int* yea
 }
 
 void SearchOnYear(char* name[], char* description[], int* priority, int* year, int* day, int* month, int* hour, int* minutes, int size, int numb) {
-	SetConsoleCP(1251);
-	SetConsoleOutputCP(1251);
+	system("cls");
 	for (int i = 0; i < size; i++) {
 		if (year[i] == numb)
 		{
@@ -63,8 +60,7 @@ void SearchOnYear(char* name[], char* description[], int* priority, int* year, i
 }
 
 void SearchOnMonth(char* name[], char* description[], int* priority, int* year, int* day, int* month, int* hour, int* minutes, int size, int numb) {
-	SetConsoleCP(1251);
-	SetConsoleOutputCP(1251);
+	system("cls");
 	for (int i = 0; i < size; i++) {
 		if (month[i] == numb)
 		{
@@ -80,8 +76,7 @@ void SearchOnMonth(char* name[], char* description[], int* priority, int* year, 
 	}
 }
 void SearchOnDay(char* name[], char* description[], int* priority, int* year, int* day, int* month, int* hour, int* minutes, int size, int numb) {
-	SetConsoleCP(1251);
-	SetConsoleOutputCP(1251);
+	system("cls");
 	for (int i = 0; i < size; i++) {
 		if (day[i] == numb)		
 		{

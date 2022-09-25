@@ -6,8 +6,9 @@
 #include <limits>
 
 
-//Модуль для функций поиска
+//Рукотворный модули
 #include "SearchOpt.h"
+#include "SortingCases.h"
 
 using namespace std;
 
@@ -20,7 +21,7 @@ void FillArrs(char* name[], char* descriprion[], int* priority,int * year, int* 
 void MassRedact(char* name[], char* description[], int* priority, int* year, int* day, int* month, int* hour, int* minutes, int size, int user); //Редактирование
 void ShowCase(char * name[], char * description[], int* priority, int* year, int* day, int* month, int* hour, int* minutes, int size, int mode); //Отображение
 void SearchCase(char* name[], char* description[], int* priority, int* year, int* day, int* month, int* hour, int* minutes, int size); // Поиск дела
-void SortingCases(char* name[], char* description[], int* priority, int* year, int* day, int* month, int* hour, int* minutes, int size);
+void SortingCases(char* name[], char* description[], int* priority, int* year, int* day, int* month, int* hour, int* minutes, int size); //Сортировка дел
 int main(){
 
 	SetConsoleCP(1251);
@@ -129,7 +130,7 @@ void ShowCase(char* name[], char* description[], int* priority, int* year, int* 
 
 	// mode 2 или же else, в ответственности за отображение дела поштучно (функция поиска)
 	// индекс size, так как он будет отвечать за индекс дела (чтобы не создавать новых переменных)
-	else {
+	else if (mode == 2) {
 		cout << "Номер дела - " << size + 1 << endl << endl;
 		cout << "Приоритет - " << priority[size] << endl;
 		cout << name[size] << "\n";
@@ -194,14 +195,15 @@ void MassRedact(char* name[], char* description[], int* priority, int* year, int
 void FillArrs(char* name[], char* description[], int * priority, int * year, int * day, int *month, int * hour, int * minutes, int size) {
 	system("cls");
 	char* buff = new char[256]{"If you see this, you cheated"}; //Хранить строку пользователя
+	char* buff2 = new char[256]{ "If you see this, you cheated" }; //Пока что через два буфера
 	cout << "Введите имя дела:\n";
 	cin.ignore(256, '\n');    //Очищаем поток ввода, чтобы паршивая строка ввода char ниже работала
 	gets_s(buff,256);
 	name[size - 1] = buff;
 
 	cout << "Введите описание дела:\n";
-	gets_s(buff, 256);
-	description[size - 1] = buff;
+	gets_s(buff2, 256);
+	description[size - 1] = buff2;
 	cout << "Введите приоритет дела (1 - самое важное, ... 5 - самое неважное): \n";
 	cin >> priority[size - 1];
 
@@ -211,8 +213,6 @@ void FillArrs(char* name[], char* description[], int * priority, int * year, int
 	cin >> year[size - 1];
 	cin >> hour[size - 1];
 	cin >> minutes[size - 1];
-	
-	delete[] buff;
 }
 
 //Поиск дел
@@ -232,9 +232,12 @@ void SearchCase(char* name[], char* description[], int* priority, int* year, int
 
 	switch (user_chose) {
 	case 1:
+		cin.ignore(256, '\n'); // Очистка потока ввода
+		cout << "Введите искомое имя:\n";
 		gets_s(buff, 256);
+		cout << "Продолжить?(1 - да)\n";
+		cin >> user_chose;
 		SearchOnName(name, description, priority, year,  day, month,  hour, minutes, size, buff);
-		delete[] buff;
 		break;
 	case 2:
 		cout << "Приоритет:\n";
@@ -268,5 +271,24 @@ void SearchCase(char* name[], char* description[], int* priority, int* year, int
 }
 
 void SortingCases(char* name[], char* description[], int* priority, int* year, int* day, int* month, int* hour, int* minutes, int size) {
+	cout << "Сортировка дел по: \n";
+	cout << "1 - Имени\n";
+	cout << "2 - Году\n";
+	cout << "3 - Приоритету\n";
+	int user_chose;
+	cin >> user_chose;
+	char* buff = new char[256]; //Хранить строку пользователя
+	switch (user_chose) {
+	case 1:
+		cin.ignore(256, '\n'); // Очистка потока ввода
+		gets_s(buff, 256);
+		break;
+	case 2:
+
+		break;
+	case 3:
+
+		break;
+	}
 
 }
