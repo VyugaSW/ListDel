@@ -4,91 +4,93 @@
 #include <stdio.h>
 
 using namespace std;
-
-void ShowCase(char* name[], char* description[], int* priority, int* year, int* day, int* month, int* hour, int* minutes, int size, int mode);
+// Не могу в данном заголовке никак сослаться из главная файла на массив структур, поэтому, пока оно не работает
+// 
 //Осуществляем поиск дел по различным критериям
+struct Case {
+	char* NameOfCase = new char[256];
+	char* description = new char[256];
+	int priority;
+	struct {
+		int year;
+		int month;
+		int day;
+		int hour;
+		int minutes;
+	} date;
+};
 
-//НЕ РАБОТАЕТ (ВРЕМЕННО)
-void SearchOnName(char* name[], char* description[], int* priority, int* year, int* day, int* month, int* hour, int* minutes, int size, char* buff) {
+void SearchOnName(Case* arr, int size, char* usNumb) {
 	system("cls");
 	for (int i = 0; i < size; i++) {
-		if (strcmp(name[i],buff) == 0)
-		{
+		if (usNumb == arr[i].NameOfCase) {
 			cout << "Номер дела - " << i + 1 << endl << endl;
-			cout << "Приоритет - " << priority[i] << endl;
-			cout << name[i] << "\n";
-			cout << description[i] << "\n";
-			cout << day[i] << "." << month[i] << "." << year[i] << endl;
-			cout << hour[i] << ":" << minutes[i];
+			cout << "Приоритет - " << arr[i].priority << endl;
+			cout << arr[i].NameOfCase << "\n";
+			cout << arr[i].description << "\n";
+			cout << arr[i].date.day << "." << arr[i].date.month << "." << arr[i].date.year << endl;
+			cout << arr[i].date.hour << ":" << arr[i].date.minutes;
 			cout << "\n--------------------\n\n";
 		}
 	}
 }
 
-void SearchOnPriority(char* name[], char* description[], int* priority, int* year, int* day, int* month, int* hour, int* minutes, int size, int numb) {
+void SearchOnPriority(Case* arr, int size, int usNumb) {
 	system("cls");
 	for (int i = 0; i < size; i++) {
-		if (priority[i] == numb) 
-		{
-			//ShowCase(name, description, priority, year, day, month, hour, minutes, i, 2);
+		if (usNumb == arr[i].priority) {
 			cout << "Номер дела - " << i + 1 << endl << endl;
-			cout << "Приоритет - " << priority[i] << endl;
-			cout << name[i] << "\n";
-			cout << description[i] << "\n";
-			cout << day[i] << "." << month[i] << "." << year[i] << endl;
-			cout << hour[i] << ":" << minutes[i];
+			cout << "Приоритет - " << arr[i].priority << endl;
+			cout << arr[i].NameOfCase << "\n";
+			cout << arr[i].description << "\n";
+			cout << arr[i].date.day << "." << arr[i].date.month << "." << arr[i].date.year << endl;
+			cout << arr[i].date.hour << ":" << arr[i].date.minutes;
 			cout << "\n--------------------\n\n";
 		}
 	}
 }
 
-void SearchOnYear(char* name[], char* description[], int* priority, int* year, int* day, int* month, int* hour, int* minutes, int size, int numb) {
+void SearchOnYear(Case* arr, int size, int usNumb) {
 	system("cls");
 	for (int i = 0; i < size; i++) {
-		if (year[i] == numb)
-		{
+		if (usNumb == arr[i].date.year) {
 			cout << "Номер дела - " << i + 1 << endl << endl;
-			cout << "Приоритет - " << priority[i] << endl;
-			cout << name[i] << "\n";
-			cout << description[i] << "\n";
-			cout << day[i] << "." << month[i] << "." << year[i] << endl;
-			cout << hour[i] << ":" << minutes[i];
+			cout << "Приоритет - " << arr[i].priority << endl;
+			cout << arr[i].NameOfCase << "\n";
+			cout << arr[i].description << "\n";
+			cout << arr[i].date.day << "." << arr[i].date.month << "." << arr[i].date.year << endl;
+			cout << arr[i].date.hour << ":" << arr[i].date.minutes;
 			cout << "\n--------------------\n\n";
 		}
-
 	}
 }
 
-void SearchOnMonth(char* name[], char* description[], int* priority, int* year, int* day, int* month, int* hour, int* minutes, int size, int numb) {
+void SearchOnMonth(Case* arr, int size, int usNumb) {
 	system("cls");
 	for (int i = 0; i < size; i++) {
-		if (month[i] == numb)
-		{
+		if (usNumb == arr[i].date.month) {
 			cout << "Номер дела - " << i + 1 << endl << endl;
-			cout << "Приоритет - " << priority[i] << endl;
-			cout << name[i] << "\n";
-			cout << description[i] << "\n";
-			cout << day[i] << "." << month[i] << "." << year[i] << endl;
-			cout << hour[i] << ":" << minutes[i];
+			cout << "Приоритет - " << arr[i].priority << endl;
+			cout << arr[i].NameOfCase << "\n";
+			cout << arr[i].description << "\n";
+			cout << arr[i].date.day << "." << arr[i].date.month << "." << arr[i].date.year << endl;
+			cout << arr[i].date.hour << ":" << arr[i].date.minutes;
 			cout << "\n--------------------\n\n";
 		}
-
 	}
 }
-void SearchOnDay(char* name[], char* description[], int* priority, int* year, int* day, int* month, int* hour, int* minutes, int size, int numb) {
+
+void SearchOnDay(Case* arr, int size, int usNumb) {
 	system("cls");
 	for (int i = 0; i < size; i++) {
-		if (day[i] == numb)		
-		{
-			//ShowCase(name, description, priority, year, day, month, hour, minutes, i, 2);
+		if (usNumb == arr[i].date.day) {
 			cout << "Номер дела - " << i + 1 << endl << endl;
-			cout << "Приоритет - " << priority[i] << endl;
-			cout << name[i] << "\n";
-			cout << description[i] << "\n";
-			cout << day[i] << "." << month[i] << "." << year[i] << endl;
-			cout << hour[i] << ":" << minutes[i];
+			cout << "Приоритет - " << arr[i].priority << endl;
+			cout << arr[i].NameOfCase << "\n";
+			cout << arr[i].description << "\n";
+			cout << arr[i].date.day << "." << arr[i].date.month << "." << arr[i].date.year << endl;
+			cout << arr[i].date.hour << ":" << arr[i].date.minutes;
 			cout << "\n--------------------\n\n";
 		}
-
 	}
 }

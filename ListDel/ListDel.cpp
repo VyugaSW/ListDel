@@ -1,5 +1,4 @@
-﻿
-#include <Windows.h>
+﻿#include <Windows.h>
 #include <iostream>
 #include <string>
 #include <stdio.h>
@@ -7,44 +6,43 @@
 
 
 //Рукотворный модули
-#include "SearchOpt.h"
-#include "SortingCases.h"
+//#include "SearchOpt.h"
 
 using namespace std;
 
-// Программа будет функционировать и хранить данные в массиве, и вся работа это лишь
-// изменение массивов.
-// Каждый массив на каждую единицу дела(имя, описание, дата, приоритет).
-// Первое дело - 0-ой индекс в каждом массиве, второе - 1-ый индекс и т.д.
 
-void FillArrs(char* name[], char* descriprion[], int* priority,int * year, int* day,  int* month, int* hour, int* minutes, int size); //Добавление
-void MassRedact(char* name[], char* description[], int* priority, int* year, int* day, int* month, int* hour, int* minutes, int size, int user); //Редактирование
-void ShowCase(char * name[], char * description[], int* priority, int* year, int* day, int* month, int* hour, int* minutes, int size, int mode); //Отображение
-void SearchCase(char* name[], char* description[], int* priority, int* year, int* day, int* month, int* hour, int* minutes, int size); // Поиск дела
-void SortingCases(char* name[], char* description[], int* priority, int* year, int* day, int* month, int* hour, int* minutes, int size); //Сортировка дел
-int main(){
+//Структура, хранящая параметры дела
+struct Case {
+	char* NameOfCase = new char[256];
+	char* description = new char[256];
+	int priority;
+	struct {
+		int year;
+		int month;
+		int day;
+		int hour;
+		int minutes;
+	} date;
+};
+
+
+
+
+void FillArrs(Case* arr, int size); //Добавление
+void MassRedact(Case* arr, int usNumb); //Редактирование
+void ShowCase(Case* arr, int size, int mode); //Отображение
+void SearchCase(Case* arr, int size); // Поиск дела
+void SortingCases(); //Сортировка дел
+
+
+
+int main() {
 
 	SetConsoleCP(1251);
 	SetConsoleOutputCP(1251);
 	int size = 0;
-	//Создаём двумерный массивы char названия
-	char** name = new char*[size];
-	for (int i = 0; i < size; i++) {
-		name[i] = new char[256];                      //Двумерный массивы char, а не string,
-	}                                                 //так как последний абсолютная скверна и с ней я не буду работать
-	//Создаём двумерный массивы char описания  
-	char** description = new char*[size];
-	for (int i = 0; i < size; i++) {
-		description[i] = new char[256];
-	}
-	//Приоритет
-	int* priority = new int[size];
-	//Дата
-	int* day = new int[size];
-	int* month = new int[size];
-	int* year = new int[size];
-	int* hour = new int[size];
-	int* minutes = new int[size];
+
+	Case* arr = new Case[size];  //Массив структур
 
 	int user_chose; //Переменная выбора
 	bool flag = true; //Не даёт программе оставовиться
@@ -70,7 +68,7 @@ int main(){
 		case 1:
 
 			size++;
-			FillArrs(name, description,priority, year, day, month, hour, minutes, size);
+			FillArrs(arr, size);
 			break;
 
 		case 2:
@@ -83,19 +81,18 @@ int main(){
 			cout << "Какое дело отредактировать?\n";
 			cout << "\tНомера дел\n";
 			for (int i = 0; i < size; i++) {
-				cout << "-  " <<  i + 1 << endl;
+				cout << "-  " << i + 1 << endl;
 			}
 			cin >> user_chose;
-			MassRedact(name, description,priority, year, day, month, hour, minutes, size, user_chose);
+			MassRedact(arr, user_chose);
 			break;
 
 		case 4:
-			SearchCase(name, description, priority,  year,  day, month, hour, minutes, size);
+			SearchCase(arr, size);
 			break;
 		case 5:
-
-			ShowCase(name, description,priority, year, day, month, hour, minutes, size,1);
-			cout << "Вернуться к списку дел (1 - да)?\n";
+			ShowCase(arr, size, 1);
+			cout << "Продолжить (1 - да)?\n";
 			cin >> user_chose;
 			break;
 
@@ -107,41 +104,40 @@ int main(){
 			break;
 		}
 	}
-	
+
 }
 
 //Выводит все дела
-void ShowCase(char* name[], char* description[], int* priority, int* year, int* day, int* month, int* hour, int* minutes, int size, int mode) {
-	
-	system("cls");	
+void ShowCase(Case* arr, int size, int mode) {
 	// mode 1 отвечает за отображение дел по порядку
 	if (mode == 1) {
+		system("cls");
 		for (int i = 0; i < size; i++) {
 			cout << "Номер дела - " << i + 1 << endl << endl;
-			cout << "Приоритет - " << priority[i] << endl;
-			cout << name[i] << "\n";
-			cout << description[i] << "\n";
-			cout << day[i] << "." << month[i] << "." << year[i] << endl;
-			cout << hour[i] << ":" << minutes[i];
+			cout << "Приоритет - " << arr[i].priority << endl;
+			cout << arr[i].NameOfCase << "\n";
+			cout << arr[i].description << "\n";
+			cout << arr[i].date.day << "." << arr[i].date.month << "." << arr[i].date.year << endl;
+			cout << arr[i].date.hour << ":" << arr[i].date.minutes;
 			cout << "\n--------------------\n\n";
 		}
 	}
-	                        //ВРЕМЕННО НЕ РАБОТАЕТ\\
 
 	// mode 2 или же else, в ответственности за отображение дела поштучно (функция поиска)
 	// индекс size, так как он будет отвечать за индекс дела (чтобы не создавать новых переменных)
 	else if (mode == 2) {
-		cout << "Номер дела - " << size + 1 << endl << endl;
-		cout << "Приоритет - " << priority[size] << endl;
-		cout << name[size] << "\n";
-		cout << description[size] << "\n";
-		cout << day[size] << "." << month[size] << "." << year[size] << endl;
-		cout << hour[size] << ":" << minutes[size];
+		cout << "Номер дела - " << size << endl << endl;
+		cout << "Приоритет - " << arr[size].priority << endl;
+		cout << arr[size].NameOfCase << "\n";
+		cout << arr[size].description << "\n";
+		cout << arr[size].date.day << "." << arr[size - 1].date.month << "." << arr[size].date.year << endl;
+		cout << arr[size].date.hour << ":" << arr[size - 1].date.minutes;
 		cout << "\n--------------------\n\n";
 	}
 }
+
 // Возможность пользователя редактировать дело, т.е. массивы
-void MassRedact(char* name[], char* description[], int* priority, int* year, int* day, int* month, int* hour, int* minutes, int size, int user) {
+void MassRedact(Case* arr, int usNumb) {
 	system("cls");
 	char* buff = new char[256]; //Хранить строку пользователя
 
@@ -151,72 +147,67 @@ void MassRedact(char* name[], char* description[], int* priority, int* year, int
 
 	int user_chose;
 	cin >> user_chose;
-
 	switch (user_chose) {
 	case 1:
-
-		cout << "Введите новое имя:\n";		
+		cin.ignore(256, '\n');
+		cout << "Введите новое имя:\n";
 		gets_s(buff, 256);
-		name[user - 1] = buff;
-		delete[] buff;
+		arr[usNumb - 1].NameOfCase;
 		break;
-
 	case 2:
-
-		cout << "Введите новый приоритет:\n";
-		cin >> priority[user - 1];
+		cout << "Введите новый приоритет:\n"; \
+			arr[usNumb - 1].priority;
 		break;
 
 	case 3:
-
+		cin.ignore(256, '\n');
 		cout << "Введите новое описание:\n";
 		gets_s(buff, 256);
-		description[user - 1] = buff;
-		delete[] buff;
-		break;		
-
-	case 4:
-
-		cout << "Введите новую дату (день, месяц, год, час, минута):\n";
-		cin >> day[user - 1];
-		cin >> month[user - 1];
-		cin >> year[user - 1];
-		cin >> hour[user - 1];
-		cin >> minutes[user - 1];
+		arr[usNumb - 1].description;
 		break;
-
+	case 4:
+		cout << "Введите новую дату (Год, месяц, день, час, минута):\n";
+		cin >> arr[usNumb - 1].date.year;
+		cin >> arr[usNumb - 1].date.month;
+		cin >> arr[usNumb - 1].date.day;
+		cin >> arr[usNumb - 1].date.hour;
+		cin >> arr[usNumb - 1].date.minutes;
+		break;
 	case 5:
-
-		FillArrs(name, description, priority, year, day, month, hour, minutes, user);
+		FillArrs(arr, usNumb);
 		break;
 	}
 }
+
 //Добавление дела
-void FillArrs(char* name[], char* description[], int * priority, int * year, int * day, int *month, int * hour, int * minutes, int size) {
+void FillArrs(Case* arr, int size) {
 	system("cls");
-	char* buff = new char[256]{"If you see this, you cheated"}; //Хранить строку пользователя
+	char* buff = new char[256]{ "If you see this, you cheated" }; //Хранить строку пользователя
 	char* buff2 = new char[256]{ "If you see this, you cheated" }; //Пока что через два буфера
+
 	cout << "Введите имя дела:\n";
-	cin.ignore(256, '\n');    //Очищаем поток ввода, чтобы паршивая строка ввода char ниже работала
-	gets_s(buff,256);
-	name[size - 1] = buff;
+	cin.ignore(256, '\n');    //Очищаем поток ввода
+	gets_s(buff, 256);
+	arr[size - 1].NameOfCase = buff;
 
 	cout << "Введите описание дела:\n";
 	gets_s(buff2, 256);
-	description[size - 1] = buff2;
-	cout << "Введите приоритет дела (1 - самое важное, ... 5 - самое неважное): \n";
-	cin >> priority[size - 1];
+	arr[size - 1].description = buff2;
 
-	cout << "Введите дату (день, месяц, год, час, минута): \n";
-	cin >> day[size - 1];
-	cin >> month[size - 1];
-	cin >> year[size - 1];
-	cin >> hour[size - 1];
-	cin >> minutes[size - 1];
+	cout << "Введите приоритет дела (1 - самое важное, ... 5 - самое неважное): \n";
+	cin >> arr[size - 1].priority;
+
+	cout << "Введите дату (год, месяц, день, час, минута): \n";
+	cin >> arr[size - 1].date.year;
+	cin >> arr[size - 1].date.month;
+	cin >> arr[size - 1].date.day;
+	cin >> arr[size - 1].date.hour;
+	cin >> arr[size - 1].date.minutes;
 }
 
-//Поиск дел
-void SearchCase(char* name[], char* description[], int* priority, int* year, int* day, int* month, int* hour, int* minutes, int size) {
+//Поиск дел // Описание проблемы оставил в заголовке SearchOpt.h
+void SearchCase(Case* arr, int size) {
+	/*
 	system("cls");
 	int user_chose; //Выбор пользователя
 	int alltemp; //Переменная для поисков
@@ -237,40 +228,41 @@ void SearchCase(char* name[], char* description[], int* priority, int* year, int
 		gets_s(buff, 256);
 		cout << "Продолжить?(1 - да)\n";
 		cin >> user_chose;
-		SearchOnName(name, description, priority, year,  day, month,  hour, minutes, size, buff);
+		SearchOnName(arr,size,buff);
 		break;
 	case 2:
 		cout << "Приоритет:\n";
 		cin >> alltemp;
-		SearchOnPriority(name, description, priority, year, day, month, hour, minutes, size, alltemp);
+		SearchOnPriority(arr, size, alltemp);
 		cout << "Продолжить?(1 - да)\n";
 		cin >> user_chose;
 		break;
 	case 3:
 		cout << "Год:\n";
 		cin >> alltemp;
-		SearchOnYear(name, description, priority, year, day, month, hour, minutes, size, alltemp);
+		SearchOnYear(arr, size, alltemp);
 		cout << "Продолжить?(1 - да)\n";
 		cin >> user_chose;
 		break;
 	case 4:
 		cout << "Месяц:\n";
 		cin >> alltemp;
-		SearchOnMonth(name, description, priority, year, day, month, hour, minutes, size, alltemp);
+		SearchOnMonth(arr, size, alltemp);
 		cout << "Продолжить?(1 - да)\n";
 		cin >> user_chose;
 		break;
 	case 5:
 		cout << "День:\n";
 		cin >> alltemp;
-		SearchOnDay(name, description, priority, year, day, month, hour, minutes, size, alltemp);
+		SearchOnDay(arr, size, alltemp);
 		cout << "Продолжить?(1 - да)\n";
 		cin >> user_chose;
 		break;
-	}
+	}*/
 }
 
-void SortingCases(char* name[], char* description[], int* priority, int* year, int* day, int* month, int* hour, int* minutes, int size) {
+//Сортировка дел
+void SortingCases() {
 	cout << "Сортировка дел по: \n";
 	cout << "1 - Имени\n";
 	cout << "2 - Году\n";
