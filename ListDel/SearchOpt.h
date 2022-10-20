@@ -4,21 +4,12 @@
 #include <stdio.h>
 
 using namespace std;
-// Ќе могу в данном заголовке никак сослатьс€ из главна€ файла на массив структур, поэтому, пока оно не работает
-// 
+
+
 //ќсуществл€ем поиск дел по различным критери€м
-struct Case {
-	char* NameOfCase = new char[256];
-	char* description = new char[256];
-	int priority;
-	struct {
-		int year;
-		int month;
-		int day;
-		int hour;
-		int minutes;
-	} date;
-};
+Case* arr;
+
+void ShowCase(Case* arr, int size, int mode, int t);
 
 void SearchOnName(Case* arr, int size, char* usName) {
 	system("cls");

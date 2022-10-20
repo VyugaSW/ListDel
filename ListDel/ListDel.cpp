@@ -5,8 +5,7 @@
 #include <limits>
 #include <conio.h>
 
-//Рукотворный модули
-#include "SearchOpt.h"
+
 
 using namespace std;
 
@@ -24,6 +23,9 @@ struct Case {
 		int minutes;
 	} date;
 };
+
+//Рукотворный заголовок
+#include "SearchOpt.h"
 
 void FillArrs(Case* arr, int size); //Добавление
 void MassRedact(Case* arr, int usNumb); //Редактирование
@@ -55,7 +57,6 @@ int main() {
 		cout << "4 - Поиск дела\n";
 		cout << "5 - Отображение дел\n";
 		cout << "6 - Сортировка дел\n\n";
-		cout << size;
 		cin >> user_chose;
 
 		//Выбор опции
