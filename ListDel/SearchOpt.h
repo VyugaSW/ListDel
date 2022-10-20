@@ -15,7 +15,7 @@ void SearchOnName(Case* arr, int size, char* usName) {
 	system("cls");
 	cout << "Полученные результаты: \n";
 	for (int i = 0; i < size; i++) {
-		if (strcmp(usName, arr[i].NameOfCase)) {
+		if (strcmp(usName, arr[i].NameOfCase) == 0) {
 			ShowCase(arr, size, 2, i);
 		}
 	}

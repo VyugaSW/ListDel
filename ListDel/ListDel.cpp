@@ -57,7 +57,8 @@ int main() {
 		cout << "3 - Редактировать дело\n";
 		cout << "4 - Поиск дела\n";
 		cout << "5 - Отображение дел\n";
-		cout << "6 - Сортировка дел\n\n";
+		cout << "6 - Сортировка дел\n";
+		cout << "(Клавиши NumPad)\n\n";
 		user_chose = _getch();
 		//Выбор опции
 
@@ -77,28 +78,24 @@ int main() {
 
 		case 51:
 			system("cls");
-			cout << "\tДля отмены нажмите \"Esc\", для продолжение \"Space\"\n\n";
-			user_chose = _getch();
-			if (user_chose == 27)
-				break;
-
 			cout << "Какое дело отредактировать?\n";
 			cout << "\tНомера дел\n";
+			
 
 			for (int i = 0; i < size; i++) {
 				cout << "-  " << i + 1 << endl;
 			}
+			cout << "(Вернуться в меню - \"Esc\")\n";
 
-			cin >> user_chose;
+			user_chose = _getch();
+			if (user_chose == 27)
+				break;
+			else
+				user_chose -= 48; //NumPad 1 = 49, NumPad 2 = 50, => отняв 48, получаем чистое чилсло (номер дела)
 			MassRedact(arr, user_chose);
 			break;
 		case 52:
 			system("cls");
-			cout << "\tДля отмены нажмите \"Esc\", для продолжение \"Space\"\n\n";
-			user_chose = _getch();
-			if (user_chose == 27)
-				break;
-
 			SearchCase(arr, size);
 			break;
 		case 53:
@@ -167,32 +164,33 @@ void ShowCase(Case* arr, int size, int mode, int t) { //int t - для mode 2
 void MassRedact(Case* arr, int usNumb) {
 	system("cls");
 	char* buff = new char[256]; //Хранить строку пользователя
-
+	char* buff2 = new char[256];
 	cout << "Что необходимо отредактировать?\n";
 	cout << "Имя - 1\n" << "Приоритет - 2\n" << "Описание - 3\n" <<
 		"Дату - 4\n" << "Всё дело - 5\n";
 
 	int user_chose;
-	cin >> user_chose;
+	user_chose = _getch();
+	cout << endl;
 	switch (user_chose) {
-	case 1:
+	case 49:
 		cin.ignore(256, '\n');
 		cout << "Введите новое имя:\n";
 		gets_s(buff, 256);
-		arr[usNumb - 1].NameOfCase;
+		arr[usNumb - 1].NameOfCase = buff;
 		break;
-	case 2:
-		cout << "Введите новый приоритет:\n"; \
-			arr[usNumb - 1].priority;
+	case 50:
+		cout << "Введите новый приоритет:\n";
+		cin >> arr[usNumb - 1].priority;
 		break;
 
-	case 3:
+	case 51:
 		cin.ignore(256, '\n');
 		cout << "Введите новое описание:\n";
-		gets_s(buff, 256);
-		arr[usNumb - 1].description;
+		gets_s(buff2, 256);
+		arr[usNumb - 1].description = buff2;
 		break;
-	case 4:
+	case 52:
 		cout << "Введите новую дату (Год, месяц, день, час, минута):\n";
 		cin >> arr[usNumb - 1].date.year;
 		cin >> arr[usNumb - 1].date.month;
@@ -200,9 +198,10 @@ void MassRedact(Case* arr, int usNumb) {
 		cin >> arr[usNumb - 1].date.hour;
 		cin >> arr[usNumb - 1].date.minutes;
 		break;
-	case 5:
+	case 53:
 		FillArrs(arr, usNumb);
 		break;
+
 	}
 }
 
@@ -245,6 +244,7 @@ void SearchCase(Case* arr, int size) {
 	cout << "3 - Году\n";
 	cout << "4 - Месяцу\n";
 	cout << "5 - Дню\n";
+	cout << "(Вернуться в меню - \"Esc\")\n";
 
 	user_chose = _getch();
 
@@ -283,6 +283,8 @@ void SearchCase(Case* arr, int size) {
 		SearchOnDay(arr, size, alltemp);
 		cout << "Для продолжения нажмите любую клавишу\n";
 		z = _getch();
+		break;
+	default:
 		break;
 	}
 }
