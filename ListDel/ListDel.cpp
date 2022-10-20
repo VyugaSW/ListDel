@@ -32,6 +32,7 @@ void MassRedact(Case* arr, int usNumb); //Редактирование
 void ShowCase(Case* arr, int size, int mode, int t); //Отображение
 void SearchCase(Case* arr, int size); // Поиск дела
 void SortingCases(); //Сортировка дел
+Case* UpdateArr(Case* arr, int& size); //Увеличение массива (добавление дела)
 
 int main() {
 
@@ -57,21 +58,30 @@ int main() {
 		cout << "4 - Поиск дела\n";
 		cout << "5 - Отображение дел\n";
 		cout << "6 - Сортировка дел\n\n";
-		cin >> user_chose;
-
+		user_chose = _getch();
 		//Выбор опции
 
 		switch (user_chose) {
-		case 1:
-			size++;
+		case 49:
+			system("cls");
+			cout << "\tДля отмены нажмите \"Esc\", для продолжение \"Space\"\n\n";
+			user_chose = _getch();
+			if (user_chose == 27)
+				break;
+			arr = UpdateArr(arr, size);
 			FillArrs(arr, size);
 			break;
-		case 2:
+		case 50:
 
 			break;
 
-		case 3:
+		case 51:
 			system("cls");
+			cout << "\tДля отмены нажмите \"Esc\", для продолжение \"Space\"\n\n";
+			user_chose = _getch();
+			if (user_chose == 27)
+				break;
+
 			cout << "Какое дело отредактировать?\n";
 			cout << "\tНомера дел\n";
 
@@ -82,22 +92,48 @@ int main() {
 			cin >> user_chose;
 			MassRedact(arr, user_chose);
 			break;
-		case 4:
+		case 52:
+			system("cls");
+			cout << "\tДля отмены нажмите \"Esc\", для продолжение \"Space\"\n\n";
+			user_chose = _getch();
+			if (user_chose == 27)
+				break;
+
 			SearchCase(arr, size);
 			break;
-		case 5:
+		case 53:
 			ShowCase(arr, size, 1,0);
 			cout << "Для продолжения нажмите любую клавишу\n";
 			z = _getch();
 			break;
-		case 6:
+		case 54:
 			break;
 		default:
-			cout << "Не пользуйся программой";
+			cout << "ОШИБКА!";
+			Sleep(1800);
 			break;
 		}
 	}
 
+}
+//Увеличение размера массива
+Case * UpdateArr(Case* arr, int &size) {
+	size++;
+	//Создаём новый массив
+	Case* newArr = new Case[size];
+	//Копируем старый массив в новый
+	for (int i = 0; i < size - 1; i++) {
+		strcpy_s(newArr[i].NameOfCase, 256, arr[i].NameOfCase);
+		strcpy_s(newArr[i].description, 256, arr[i].description);
+		newArr[i].priority = arr[i].priority;
+		newArr[i].date.day = arr[i].date.day;
+		newArr[i].date.month = arr[i].date.month;
+		newArr[i].date.year = arr[i].date.year;
+		newArr[i].date.hour = arr[i].date.hour;
+		newArr[i].date.minutes = arr[i].date.minutes;
+	}
+	delete[] arr; //Удаляем старый
+	return newArr;
 }
 
 //Выводит все дела
@@ -105,7 +141,7 @@ void ShowCase(Case* arr, int size, int mode, int t) { //int t - для mode 2
 	// mode 1 отвечает за отображение дел по порядку
 	if (mode == 1) {
 		for (int i = 0; i < size; i++) {
-			cout << "Номер дела - " << i + 1 << endl << endl;
+			cout << "Номер дела - " << i + 1 << endl << "-----" << endl;
 			cout << "Приоритет - " << arr[i].priority << endl;
 			cout << arr[i].NameOfCase << "\n";
 			cout << arr[i].description << "\n";
@@ -117,7 +153,7 @@ void ShowCase(Case* arr, int size, int mode, int t) { //int t - для mode 2
 
 	// mode 2 или же else, в ответственности за отображение дела поштучно (функция поиска)
 	else if (mode == 2) {
-		cout << "Номер дела - " << t+1 << endl << endl;
+		cout << "Номер дела - " << t+1 << endl << "-----" << endl;
 		cout << "Приоритет - " << arr[t].priority << endl;
 		cout << arr[t].NameOfCase << "\n";
 		cout << arr[t].description << "\n";
@@ -177,7 +213,6 @@ void FillArrs(Case* arr, int size) {
 	char* buff2 = new char[256]{ "If you see this, you cheated" }; //Пока что через два буфера
 
 	cout << "Введите имя дела:\n";
-	cin.ignore(256, '\n');    //Очищаем поток ввода
 	gets_s(buff, 256);
 	arr[size - 1].NameOfCase = buff;
 
@@ -211,39 +246,38 @@ void SearchCase(Case* arr, int size) {
 	cout << "4 - Месяцу\n";
 	cout << "5 - Дню\n";
 
-	cin >> user_chose;
+	user_chose = _getch();
 
 	switch (user_chose) {
-	case 1:
-		cin.ignore(256, '\n'); // Очистка потока ввода
+	case 49:
 		cout << "Введите искомое имя:\n";
 		gets_s(buff, 256);
 		SearchOnName(arr,size,buff);
 		cout << "Для продолжения нажмите любую клавишу\n";
 		z = _getch();
 		break;
-	case 2:
+	case 50:
 		cout << "Приоритет:\n";
 		cin >> alltemp;
 		SearchOnPriority(arr, size, alltemp);
 		cout << "Для продолжения нажмите любую клавишу\n";
 		z = _getch();
 		break;
-	case 3:
+	case 51:
 		cout << "Год:\n";
 		cin >> alltemp;
 		SearchOnYear(arr, size, alltemp);
 		cout << "Для продолжения нажмите любую клавишу\n";
 		z = _getch();
 		break;
-	case 4:
+	case 52:
 		cout << "Месяц:\n";
 		cin >> alltemp;
 		SearchOnMonth(arr, size, alltemp);
 		cout << "Для продолжения нажмите любую клавишу\n";
 		z = _getch();
 		break;
-	case 5:
+	case 53:
 		cout << "День:\n";
 		cin >> alltemp;
 		SearchOnDay(arr, size, alltemp);
