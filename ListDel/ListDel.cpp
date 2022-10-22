@@ -212,6 +212,8 @@ void FillArrs(Case* arr, int size) {
 	char* buff2 = new char[256]{ "If you see this, you cheated" }; //Пока что через два буфера
 
 	cout << "Введите имя дела:\n";
+	if (size > 1)
+		cin.ignore(256, '\n');
 	gets_s(buff, 256);
 	arr[size - 1].NameOfCase = buff;
 
@@ -230,7 +232,7 @@ void FillArrs(Case* arr, int size) {
 	cin >> arr[size - 1].date.minutes;
 }
 
-
+//Поиск дел
 void SearchCase(Case* arr, int size) {
 	
 	system("cls");
