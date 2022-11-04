@@ -6,8 +6,7 @@
 using namespace std;
 
 
-//ќсуществл€ем поиск дел по различным критери€м
-Case* arr;
+//--ќсуществл€ем поиск дел по различным критери€м
 
 void ShowCase(Case* arr, int size, int mode, int t);
 

@@ -143,8 +143,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="SearchOpt.h" />
-    <ClInclude Include="SearchOption.h" />
-    <ClInclude Include="SearchOptrionsr.h" />
     <ClInclude Include="SortingCases.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
