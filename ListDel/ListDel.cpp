@@ -29,7 +29,7 @@ struct Case {
 Case* DeleteArr(Case* arr, int& size, int index);//Удаление
 void FillArrs(Case* arr, int size); //Добавление
 void MassRedact(Case* arr, int usNumb); //Редактирование
-void ShowCase(Case* arr, int size, int mode, int t); //Отображение
+void ShowCase(Case* arr, int size); //Отображение
 void SearchCase(Case* arr, int size); // Поиск дела
 void SortingCases(Case** q, int size, Case* arr); //Сортировка дел
 Case* UpdateArr(Case* arr, int& size); //Увеличение массива (добавление дела)
@@ -107,7 +107,7 @@ int main() {
 			break;
 		case 53: //5
 			system("cls");
-			ShowCase(arr, size, 1,0);
+			ShowCase(arr, size);
 			cout << "Для продолжения нажмите любую клавишу\n";
 			_getch();
 			break;
@@ -143,30 +143,17 @@ Case * UpdateArr(Case* arr, int &size) {
 }
 
 //Выводит все дела
-void ShowCase(Case* arr, int size, int mode, int t) { //int t - для mode 2
-	// mode 1 отвечает за отображение дел по порядку
-	if (mode == 1) {
-		for (int i = 0; i < size; i++) {
-			cout << "Номер дела - " << i + 1 << endl << "-----" << endl;
-			cout << "Приоритет - " << arr[i].priority << endl;
-			cout << arr[i].NameOfCase << "\n";
-			cout << arr[i].description << "\n";
-			cout << arr[i].date.day << "." << arr[i].date.month << "." << arr[i].date.year << endl;
-			cout << arr[i].date.hour << ":" << arr[i].date.minutes;
-			cout << "\n--------------------\n\n";
-		}
-	}
-
-	// mode 2 или же else, в ответственности за отображение дела поштучно (функция поиска)
-	else if (mode == 2) {
-		cout << "Номер дела - " << t+1 << endl << "-----" << endl;
-		cout << "Приоритет - " << arr[t].priority << endl;
-		cout << arr[t].NameOfCase << "\n";
-		cout << arr[t].description << "\n";
-		cout << arr[t].date.day << "." << arr[t].date.month << "." << arr[t].date.year << endl;
-		cout << arr[t].date.hour << ":" << arr[t].date.minutes;
+void ShowCase(Case* arr, int size) { 
+	for (int i = 0; i < size; i++) {
+		cout << "Номер дела - " << i + 1 << endl << "-----" << endl;
+		cout << "Приоритет - " << arr[i].priority << endl;
+		cout << arr[i].NameOfCase << "\n";
+		cout << arr[i].description << "\n";
+		cout << arr[i].date.day << "." << arr[i].date.month << "." << arr[i].date.year << endl;
+		cout << arr[i].date.hour << ":" << arr[i].date.minutes;
 		cout << "\n--------------------\n\n";
 	}
+
 }
 
 // Возможность пользователя редактировать дело, т.е. массивы
@@ -217,18 +204,25 @@ void MassRedact(Case* arr, int usNumb) {
 //Добавление дела
 void FillArrs(Case* arr, int size) {
 	system("cls");
-	char* buff = new char[256]{ "If you see this, you cheated" }; //Хранить строку пользователя
-	char* buff2 = new char[256]{ "If you see this, you cheated" }; //Пока что через два буфера
-
+	
 	cout << "Введите имя дела:\n";
 	if (size > 1)
 		cin.ignore(256, '\n');
-	gets_s(buff, 256);
-	arr[size - 1].NameOfCase = buff;
+
+	try {
+		gets_s(arr[size - 1].NameOfCase, 256);
+		throw(arr[size - 1]);
+	}
+	catch (...) {
+		cout << "Ошибка!\n";
+		cout << "Попробуйте снова!\n";
+	}
+	
 
 	cout << "Введите описание дела:\n";
-	gets_s(buff2, 256);
-	arr[size - 1].description = buff2;
+	gets_s(arr[size - 1].description, 256);
+
+
 
 	cout << "Введите приоритет дела (1 - самое важное, ... 5 - самое неважное): \n";
 	cin >> arr[size - 1].priority;
@@ -294,11 +288,17 @@ void SearchCase(Case* arr, int size) {
 		cout << "Для продолжения нажмите любую клавишу\n";
 		_getch();
 		break;
+	case 27:
+		break;
 	default:
+		cout << "ОШИБКА!";
+		Sleep(1800);
+		SearchCase(arr, size);
 		break;
 	}
 }
 
+//Удаление дела
 Case* DeleteArr(Case* arr, int& size, int index) {
 	size--;
 	Case* newArr = new Case[size];
@@ -325,7 +325,7 @@ Case* DeleteArr(Case* arr, int& size, int index) {
 
 //Сортировка дел
 void SortingCases(Case** pointCases, int size, Case* arr) {
-
+	system("cls");
 	for (int i = 0; i < size; i++) {
 		pointCases[i] = &arr[i];
 	}
@@ -334,26 +334,33 @@ void SortingCases(Case** pointCases, int size, Case* arr) {
 	cout << "1 - Имени\n";
 	cout << "2 - Году\n";
 	cout << "3 - Приоритету\n";
+	cout << "(Для возврата в меню - \"Esc\")\n";
 	int user_chose;
 	user_chose = _getch();
 	switch (user_chose) {
 	case 49:
+		system("cls");
 		SortingOnName(arr, size, pointCases);
 		cout << "Для продолжения нажмите любую клавишу\n";
 		_getch();
 		break;
 	case 50:
+		system("cls");
 		SortingOnYear(arr, size, pointCases);
 		cout << "Для продолжения нажмите любую клавишу\n";
 		_getch();
 		break;
 	case 51:
+		system("cls");
 		SortingOnPriority(arr, size, pointCases);
 		cout << "Для продолжения нажмите любую клавишу\n";
 		_getch();
 		break;
+	case 27:
+		break;
 	default:
 		cout << "\n\tОШИБКА!\n";
+		Sleep(1000);
 		SortingCases(pointCases, size, arr);
 	}
 }
